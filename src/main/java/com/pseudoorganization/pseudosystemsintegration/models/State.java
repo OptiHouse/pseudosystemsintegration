@@ -3,7 +3,6 @@ package com.pseudoorganization.pseudosystemsintegration.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,7 +12,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Data
 public class State {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -21,6 +19,10 @@ public class State {
     private String name;
 
     @OneToMany
-    @JoinColumn(name = "stateId", referencedColumnName = "id")
-    private List<Year> year = new ArrayList<>();
+    @JoinColumn(name = "state_id", referencedColumnName = "id")
+    private List<Statistics> statistics = List.of();
+
+    public static State of(final String name) {
+        return new State(UUID.randomUUID(), name, List.of());
+    }
 }

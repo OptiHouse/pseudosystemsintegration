@@ -14,11 +14,14 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Data
 public class Race {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
     private String population;
+
+    public static Race of(final String name, final String population) {
+        return new Race(UUID.randomUUID(), name, population);
+    }
 }

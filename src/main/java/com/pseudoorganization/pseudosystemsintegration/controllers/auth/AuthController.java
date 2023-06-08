@@ -1,10 +1,9 @@
 package com.pseudoorganization.pseudosystemsintegration.controllers.auth;
 
 
-
+import com.pseudoorganization.pseudosystemsintegration.controllers.auth.request.LoginRequest;
+import com.pseudoorganization.pseudosystemsintegration.controllers.auth.response.LoginResponse;
 import com.pseudoorganization.pseudosystemsintegration.models.User;
-import com.pseudoorganization.pseudosystemsintegration.rest.models.request.LoginRequest;
-import com.pseudoorganization.pseudosystemsintegration.rest.models.response.LoginResponse;
 import com.pseudoorganization.pseudosystemsintegration.security.AuthProvider;
 import com.pseudoorganization.pseudosystemsintegration.security.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;

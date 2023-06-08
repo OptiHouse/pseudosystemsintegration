@@ -1,6 +1,6 @@
-package com.pseudoorganization.pseudosystemsintegration.controllers;
+package com.pseudoorganization.pseudosystemsintegration.controllers.data;
 
-import com.pseudoorganization.pseudosystemsintegration.repository.StateRepository;
+import com.pseudoorganization.pseudosystemsintegration.services.SeedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/data")
 public class DataController {
 
-    private final StateRepository stateRepository;
+    private final SeedService seedService;
 
     @GetMapping("")
     public String data() {
         return "data";
+    }
+
+    @GetMapping("/seed")
+    public String seed() {
+        seedService.seed();
+        return "seeded";
     }
 }

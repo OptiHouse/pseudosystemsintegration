@@ -1,4 +1,4 @@
-package com.pseudoorganization.pseudosystemsintegration.rest.models.response;
+package com.pseudoorganization.pseudosystemsintegration.controllers.auth.response;
 
 import lombok.Getter;
 import lombok.Setter;

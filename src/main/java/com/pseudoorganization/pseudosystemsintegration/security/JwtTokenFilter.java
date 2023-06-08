@@ -16,6 +16,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
@@ -73,9 +74,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     private UserDetails getUserDetails(String token) {
-        Long userIdFromToken = jwtTokenUtil.getUserIdFromToken(token);
+        UUID userIdFromToken = jwtTokenUtil.getUserIdFromToken(token);
 
-        return userRepository.findUserById(userIdFromToken)
+        return userRepository.findById(userIdFromToken)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
