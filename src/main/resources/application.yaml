@@ -1,8 +1,25 @@
+server:
+  port: 8888
+
 spring:
+  thymeleaf:
+    cache: false
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+  web:
+    resources:
+      static-locations: file:"/resources/**"
+  mvc:
+    static-path-pattern: /resources/**
   datasource:
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: user
+    url: jdbc:mysql://localhost:3306/integracje
+    password: user
   jpa:
-    show-sql: true
+    generate-ddl: 'true'
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+  application:
+    name: Projekt na inetgracje
