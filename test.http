@@ -1,5 +1,0 @@
-### Seed data
-GET http://localhost:8080/data/seed
-
-### Graph
-GET http://localhost:8080/graph

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -39,6 +40,7 @@ public class SeedService {
 
 
         Statistics statistics = Statistics.builder()
+                .id(UUID.randomUUID())
                 .date(java.time.LocalDate.ofYearDay(2020, 1))
                 .crimes(List.of(larceny, murder))
                 .population(List.of(white, asian))
@@ -48,7 +50,7 @@ public class SeedService {
         alabama.setStatistics(List.of(statistics));
 
         stateRepository.save(alabama);
-        
+
         log.trace(alabama.toString());
         log.trace("Seeding database finished");
     }

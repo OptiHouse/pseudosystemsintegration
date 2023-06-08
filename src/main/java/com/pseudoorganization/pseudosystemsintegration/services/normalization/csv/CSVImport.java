@@ -2,6 +2,7 @@ package com.pseudoorganization.pseudosystemsintegration.services.normalization.c
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -12,13 +13,14 @@ import java.util.List;
 
 @Slf4j
 @Getter
+@Service
 public class CSVImport {
 
     private static final String COMMA_DELIMITER = ",";
 
     List<List<String>> records = new ArrayList<>();
 
-    public void loadCSV(){
+    public void loadCSV() {
         InputStream inputStream = CSVImport.class.getResourceAsStream("/static/state_crime.csv");
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         try (BufferedReader br = new BufferedReader(inputStreamReader)) {
@@ -29,7 +31,7 @@ public class CSVImport {
             }
             log.info("CSV file loaded successfully.");
             log.trace(records.toString());
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("Error while loading CSV file: " + e.getMessage());
         }
     }

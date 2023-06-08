@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,11 +21,11 @@ public class Statistics {
     private UUID id;
     private LocalDate date;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "statistics_id", referencedColumnName = "id")
-    private List<Race> population = List.of();
+    private List<Race> population = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "state_id", referencedColumnName = "id")
-    private List<Crime> crimes = List.of();
+    private List<Crime> crimes = new ArrayList<>();
 }

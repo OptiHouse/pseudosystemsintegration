@@ -2,11 +2,10 @@ package com.pseudoorganization.pseudosystemsintegration.services.normalization.j
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.springframework.stereotype.Component;
-
+import org.json.simple.parser.JSONParser;
+import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -14,7 +13,7 @@ import java.util.HashMap;
 
 @Slf4j
 @Getter
-@Component
+@Service
 public class JsonImport {
     private JSONArray jsonArray;
 
