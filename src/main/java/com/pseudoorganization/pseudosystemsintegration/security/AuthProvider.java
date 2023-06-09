@@ -32,9 +32,7 @@ public class AuthProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Niepoprawne hasło lub nazwa użytkownika");
         }
 
-        if (!user.isEnabled()){
-            throw new LockedException("Konto zostało zablokowane");
-        }else if (!passwordEncoder.matches(password, user.getPassword())){
+        if (!passwordEncoder.matches(password, user.getPassword())){
             throw new BadCredentialsException("Niepoprawne hasło lub nazwa użytkownika");
         }else if (passwordEncoder.matches(password, user.getPassword())) {
             return new UsernamePasswordAuthenticationToken(user, password,  user.getAuthorities());

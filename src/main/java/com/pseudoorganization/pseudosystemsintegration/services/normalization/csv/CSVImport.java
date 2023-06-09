@@ -7,6 +7,8 @@ import com.pseudoorganization.pseudosystemsintegration.services.StateService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -49,7 +51,7 @@ public class CSVImport {
         }
     }
 
-    //    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void normalizeData() {
         log.info("Start normalizing CSV data.");
 
@@ -72,35 +74,7 @@ public class CSVImport {
 
             List<Crime> crimes = statistics.getCrimes();
 
-            String burglaryRate = line.get(4);
-            String larcenyRate = line.get(5);
-            String motorRate = line.get(6);
-
-            String assaultRate = line.get(8);
-            String murderRate = line.get(9);
-            String rapeRate = line.get(10);
-            String robberyRate = line.get(11);
-
-            String burglaryTotal = line.get(13);
-            String larcenyTotal = line.get(14);
-            String motorTotal = line.get(15);
-
-            String assaultTotal = line.get(17);
-            String murderTotal = line.get(18);
-            String rapeTotal = line.get(19);
-            String robberyTotal = line.get(20);
-
-            HashMap<String, List<String>> crimesMap = new HashMap<>();
-
-            crimesMap.put("Burglary", new ArrayList<>(Arrays.asList(burglaryRate, burglaryTotal)));
-            crimesMap.put("Larceny", new ArrayList<>(Arrays.asList(larcenyRate, larcenyTotal)));
-            crimesMap.put("Motor", new ArrayList<>(Arrays.asList(motorRate, motorTotal)));
-
-            crimesMap.put("Assault", new ArrayList<>(Arrays.asList(assaultRate, assaultTotal)));
-            crimesMap.put("Murder", new ArrayList<>(Arrays.asList(murderRate, murderTotal)));
-            crimesMap.put("Rape", new ArrayList<>(Arrays.asList(rapeRate, rapeTotal)));
-            crimesMap.put("Robbery", new ArrayList<>(Arrays.asList(robberyRate, robberyTotal)));
-
+            HashMap<String, List<String>> crimesMap = getCrimesMap(line);
 
             crimesMap.entrySet().stream()
                     .filter(entry -> crimes.stream().noneMatch(crime -> crime.getName().equals(entry.getKey())))
@@ -113,6 +87,39 @@ public class CSVImport {
             stateService.save(state);
         });
 
+    }
+
+    private static HashMap<String, List<String>> getCrimesMap(List<String> line) {
+        String burglaryRate = line.get(4);
+        String larcenyRate = line.get(5);
+        String motorRate = line.get(6);
+
+        String assaultRate = line.get(8);
+        String murderRate = line.get(9);
+        String rapeRate = line.get(10);
+        String robberyRate = line.get(11);
+
+        String burglaryTotal = line.get(13);
+        String larcenyTotal = line.get(14);
+        String motorTotal = line.get(15);
+
+        String assaultTotal = line.get(17);
+        String murderTotal = line.get(18);
+        String rapeTotal = line.get(19);
+        String robberyTotal = line.get(20);
+
+        HashMap<String, List<String>> crimesMap = new HashMap<>();
+
+        crimesMap.put("Burglary", new ArrayList<>(Arrays.asList(burglaryRate, burglaryTotal)));
+        crimesMap.put("Larceny", new ArrayList<>(Arrays.asList(larcenyRate, larcenyTotal)));
+        crimesMap.put("Motor", new ArrayList<>(Arrays.asList(motorRate, motorTotal)));
+
+        crimesMap.put("Assault", new ArrayList<>(Arrays.asList(assaultRate, assaultTotal)));
+        crimesMap.put("Murder", new ArrayList<>(Arrays.asList(murderRate, murderTotal)));
+        crimesMap.put("Rape", new ArrayList<>(Arrays.asList(rapeRate, rapeTotal)));
+        crimesMap.put("Robbery", new ArrayList<>(Arrays.asList(robberyRate, robberyTotal)));
+
+        return crimesMap;
     }
 
     private String getCrimeType(String crimeName) {

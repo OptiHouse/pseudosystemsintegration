@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,24 +40,17 @@ public class SecurityConfig{
 
         http
                 .exceptionHandling()
-                .authenticationEntryPoint((request, response, authException) -> {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
-                });
+                .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage()));
 
 
         http
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(
-                                "/",
-                                "/home",
-                                "/index",
-                                "/register**",
-                                "/auth/login",
-                                "/images/**",
-                                "/js/**").permitAll()
-                        .anyRequest().permitAll() //zmienić na z permitAll() na authenticated()
+                                "/auth/register",
+                                "/auth/login").permitAll()
+                        .anyRequest().authenticated()
                 )
-                .logout(logout -> logout.permitAll());
+                .logout(LogoutConfigurer::permitAll);
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 

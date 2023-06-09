@@ -21,22 +21,22 @@ public class DataController {
 
     private final CSVImport csvImport;
 
-    @PostMapping("/loadPopulationData")
-    public ResponseEntity<?> loadPopulationData() {
+    @PostMapping("/loadData")
+    public ResponseEntity<?> loadData() {
+        loadPopulationDataFromJson();
+        loadCrimeDataFromCSV();
 
-        jsonImport.loadJSON();
-        jsonImport.normalizeData();
-
-        return ResponseEntity.ok(jsonImport.getJsonArray());
+        return ResponseEntity.ok("Data Loaded");
     }
 
-    @PostMapping("/loadCrimeData")
-    public ResponseEntity<?> loadCrimeData() {
-
+    private void loadCrimeDataFromCSV() {
         csvImport.loadCSV();
         csvImport.normalizeData();
+    }
 
-        return ResponseEntity.ok(csvImport.getRecords());
+    private void loadPopulationDataFromJson() {
+        jsonImport.loadJSON();
+        jsonImport.normalizeData();
     }
 
     @GetMapping("/seed")
