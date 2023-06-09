@@ -10,6 +10,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -42,6 +44,7 @@ public class JsonImport {
         }
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void normalizeData() {
         log.info("Start normalizing JSON data.");
 
@@ -74,7 +77,7 @@ public class JsonImport {
 
                 raceMap.entrySet().stream()
                         .filter(entry -> raceList.stream().noneMatch(race -> race.getName().equals(entry.getKey())))
-                        .forEach(entry -> raceList.add(Race.of(entry.getKey(),  entry.getValue())));
+                        .forEach(entry -> raceList.add(Race.of(entry.getKey(), entry.getValue())));
 
                 statistics.setPopulation(raceList);
                 statisticsList.add(statistics);

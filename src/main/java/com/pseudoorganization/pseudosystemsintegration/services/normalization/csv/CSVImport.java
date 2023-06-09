@@ -7,6 +7,8 @@ import com.pseudoorganization.pseudosystemsintegration.services.StateService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -39,7 +41,7 @@ public class CSVImport {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(COMMA_DELIMITER);
                 List<String> arrayList = Arrays.asList(values);
-                arrayList.replaceAll(e -> e.replace("\"",""));
+                arrayList.replaceAll(e -> e.replace("\"", ""));
                 records.add(arrayList);
             }
             log.info("CSV file loaded successfully.");
@@ -49,6 +51,7 @@ public class CSVImport {
         }
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void normalizeData() {
         log.info("Start normalizing CSV data.");
 
@@ -103,7 +106,7 @@ public class CSVImport {
 
             crimesMap.entrySet().stream()
                     .filter(entry -> crimes.stream().noneMatch(crime -> crime.getName().equals(entry.getKey())))
-                    .forEach(entry -> crimes.add(Crime.of(entry.getKey(),getCrimeType(entry.getKey()), entry.getValue().get(0), entry.getValue().get(1))));
+                    .forEach(entry -> crimes.add(Crime.of(entry.getKey(), getCrimeType(entry.getKey()), entry.getValue().get(0), entry.getValue().get(1))));
 
             statistics.setCrimes(crimes);
 
@@ -114,11 +117,17 @@ public class CSVImport {
 
     }
 
-    private String getCrimeType(String crimeName){
-        switch (crimeName){
-            case "Burglary", "Larceny", "Motor" -> { return "Property"; }
-            case "Assault", "Murder", "Rape", "Robbery" -> { return "Violent"; }
-            default -> { return ""; }
+    private String getCrimeType(String crimeName) {
+        switch (crimeName) {
+            case "Burglary", "Larceny", "Motor" -> {
+                return "Property";
+            }
+            case "Assault", "Murder", "Rape", "Robbery" -> {
+                return "Violent";
+            }
+            default -> {
+                return "";
+            }
         }
     }
 }
