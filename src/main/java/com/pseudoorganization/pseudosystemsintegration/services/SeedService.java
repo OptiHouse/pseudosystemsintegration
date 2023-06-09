@@ -38,7 +38,6 @@ public class SeedService {
         Race white = Race.of("white", "123");
         Race asian = Race.of("asian", "12");
 
-
         Statistics statistics = Statistics.builder()
                 .id(UUID.randomUUID())
                 .year("2020")
@@ -49,7 +48,11 @@ public class SeedService {
         State alabama = State.of("Alabama");
         alabama.setStatistics(List.of(statistics));
 
+        State alaska = State.of("Alaska");
+        alaska.setStatistics(List.of(statistics));
+
         stateRepository.save(alabama);
+        stateRepository.save(alaska);
 
         log.trace(alabama.toString());
         log.trace("Seeding database finished");
