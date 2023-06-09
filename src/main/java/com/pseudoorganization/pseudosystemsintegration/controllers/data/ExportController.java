@@ -34,7 +34,7 @@ public class ExportController {
     @GetMapping("json")
     @SneakyThrows
     public ResponseEntity<Resource> exportJSON(@RequestParam Optional<List<String>> states,
-                                               @RequestParam Optional<List<Integer>> years,
+                                               @RequestParam Optional<List<String>> years,
                                                @RequestParam Optional<List<String>> crimes,
                                                @RequestParam Optional<List<String>> races) {
         List<State> filtered = stateService.getFiltered(states, years, crimes, races);
@@ -45,7 +45,7 @@ public class ExportController {
     @GetMapping("xml")
     @SneakyThrows
     public ResponseEntity<Resource> exportXML(@RequestParam Optional<List<String>> states,
-                                              @RequestParam Optional<List<Integer>> years,
+                                              @RequestParam Optional<List<String>> years,
                                               @RequestParam Optional<List<String>> crimes,
                                               @RequestParam Optional<List<String>> races) {
         List<State> filtered = stateService.getFiltered(states, years, crimes, races);
@@ -56,7 +56,7 @@ public class ExportController {
     @GetMapping("yaml")
     @SneakyThrows
     public ResponseEntity<Resource> exportYAML(@RequestParam Optional<List<String>> states,
-                                               @RequestParam Optional<List<Integer>> years,
+                                               @RequestParam Optional<List<String>> years,
                                                @RequestParam Optional<List<String>> crimes,
                                                @RequestParam Optional<List<String>> races) {
         List<State> filtered = stateService.getFiltered(states, years, crimes, races);
