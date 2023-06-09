@@ -7,8 +7,6 @@ import com.pseudoorganization.pseudosystemsintegration.services.StateService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -51,7 +49,7 @@ public class CSVImport {
         }
     }
 
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    //    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void normalizeData() {
         log.info("Start normalizing CSV data.");
 

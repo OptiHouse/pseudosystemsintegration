@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 @Primary
@@ -20,6 +21,6 @@ public class JsonParser extends ObjectMapper implements Parser {
     @SneakyThrows
     @Override
     public <T> List<T> readValues(InputStream file, Class<T> clazz) {
-        return this.readValue(file, this.getTypeFactory().constructCollectionType(List.class, clazz));
+        return this.readValue(file, this.getTypeFactory().constructCollectionType(ArrayList.class, clazz));
     }
 }
