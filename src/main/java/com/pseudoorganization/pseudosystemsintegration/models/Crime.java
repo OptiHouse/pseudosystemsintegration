@@ -24,4 +24,8 @@ public class Crime {
     private String type;
     private String rate;
     private String total;
+
+    public static Crime of(final String name, final String type, final String rate, final String total) {
+        return new Crime(UUID.randomUUID(), name, type, rate, total);
+    }
 }

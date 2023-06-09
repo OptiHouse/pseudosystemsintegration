@@ -19,7 +19,7 @@ public class StateService {
     }
 
     public List<State> getFiltered(Optional<List<String>> states,
-                                   Optional<List<Integer>> years,
+                                   Optional<List<String>> years,
                                    Optional<List<String>> crimes,
                                    Optional<List<String>> races) {
 
@@ -30,7 +30,7 @@ public class StateService {
 
         years.ifPresent(integers -> all.forEach(
                 state -> state.getStatistics().removeIf(
-                        statistic -> !integers.contains(statistic.getDate().getYear()))));
+                        statistic -> !integers.contains(statistic.getYear()))));
 
         crimes.ifPresent(strings -> all.forEach(
                 state -> state.getStatistics().forEach(
@@ -41,5 +41,13 @@ public class StateService {
                         statistic -> statistic.getPopulation().removeIf(population -> !strings.contains(population.getName())))));
 
         return all;
+    }
+
+    public State findByName(String name) {
+        return stateRepository.findByName(name).orElse(null);
+    }
+
+    public void save(State state) {
+        stateRepository.save(state);
     }
 }

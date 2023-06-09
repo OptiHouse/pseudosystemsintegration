@@ -41,7 +41,7 @@ public class SeedService {
 
         Statistics statistics = Statistics.builder()
                 .id(UUID.randomUUID())
-                .date(java.time.LocalDate.ofYearDay(2020, 1))
+                .year("2020")
                 .crimes(List.of(larceny, murder))
                 .population(List.of(white, asian))
                 .build();

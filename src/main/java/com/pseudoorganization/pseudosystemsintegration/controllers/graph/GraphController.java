@@ -20,7 +20,7 @@ public class GraphController {
 
     @GetMapping("")
     public List<State> graph(@RequestParam Optional<List<String>> states,
-                             @RequestParam Optional<List<Integer>> years,
+                             @RequestParam Optional<List<String>> years,
                              @RequestParam Optional<List<String>> crimes,
                              @RequestParam Optional<List<String>> races) {
 

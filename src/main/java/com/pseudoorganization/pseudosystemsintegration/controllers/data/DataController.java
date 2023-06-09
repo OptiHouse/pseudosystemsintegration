@@ -34,6 +34,7 @@ public class DataController {
     public ResponseEntity<?> loadCrimeData() {
 
         csvImport.loadCSV();
+        csvImport.normalizeData();
 
         return ResponseEntity.ok(csvImport.getRecords());
     }
