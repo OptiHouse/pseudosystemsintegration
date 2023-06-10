@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <getSummaryRequest xmlns="http://test/summary">
+         <year>2020</year>
+      </getSummaryRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
