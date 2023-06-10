@@ -1,0 +1,34 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://test/summary"
+           targetNamespace="http://test/summary"
+           elementFormDefault="qualified">
+
+    <xs:element name="getSummaryRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="states" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="years" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="crimes" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="races" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getSummaryResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="summary" type="tns:summary"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="summary">
+        <xs:sequence>
+            <xs:element name="population_max_percent" type="xs:string"/>
+            <xs:element name="crimes_total" type="xs:string"/>
+            <xs:element name="crimes_total_property" type="xs:string"/>
+            <xs:element name="crimes_total_violent" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
