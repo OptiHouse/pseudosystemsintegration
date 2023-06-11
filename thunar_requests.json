@@ -1,0 +1,251 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "integration",
+    "dateExported": "2023-06-10T22:18:03.685Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "53ed7c1d-7d1b-4a32-b3c7-b204c4fd2078",
+            "colId": "adf3cbf5-46c9-4de2-949d-0f72086f48ed",
+            "containerId": "",
+            "name": "seed",
+            "url": "http://localhost:8080/data/seed",
+            "method": "GET",
+            "sortNum": 5000,
+            "created": "2023-06-09T11:56:30.080Z",
+            "modified": "2023-06-09T14:21:17.036Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "e6ba8ebc-0b74-4ee2-8655-f36eacc517c6",
+            "colId": "adf3cbf5-46c9-4de2-949d-0f72086f48ed",
+            "containerId": "",
+            "name": "seed data",
+            "url": "http://localhost:8080/data/loadData",
+            "method": "POST",
+            "sortNum": 6250,
+            "created": "2023-06-09T16:59:49.439Z",
+            "modified": "2023-06-10T14:48:56.805Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "bdf16707-7b48-43c1-aa29-f6a5f276a6ba",
+            "colId": "adf3cbf5-46c9-4de2-949d-0f72086f48ed",
+            "containerId": "",
+            "name": "filter",
+            "url": "http://localhost:8080/graphs?states=Alabama&years=2005&crimes=Larceny&races=nhwhite_est",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-06-09T11:56:17.722Z",
+            "modified": "2023-06-10T15:35:41.539Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "states",
+                    "value": "\"",
+                    "isPath": false
+                },
+                {
+                    "name": "years",
+                    "value": "2005",
+                    "isPath": false
+                },
+                {
+                    "name": "crimes",
+                    "value": "Larceny",
+                    "isPath": false
+                },
+                {
+                    "name": "races",
+                    "value": "nhwhite_est",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "29056288-2b49-487c-affe-243d8f820e09",
+            "colId": "adf3cbf5-46c9-4de2-949d-0f72086f48ed",
+            "containerId": "",
+            "name": "filter sth",
+            "url": "http://localhost:8080/graphs?states=Alabama&years=2020",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-06-09T19:09:24.474Z",
+            "modified": "2023-06-09T19:10:27.767Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "states",
+                    "value": "Alabama",
+                    "isPath": false
+                },
+                {
+                    "name": "years",
+                    "value": "2020",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "198ca6e1-cd8d-438c-9065-edbeaf72e15d",
+            "colId": "adf3cbf5-46c9-4de2-949d-0f72086f48ed",
+            "containerId": "",
+            "name": "export json",
+            "url": "http://localhost:8080/export/json?states=&years=2005&crimes=Larceny&races=white",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-06-09T12:41:46.062Z",
+            "modified": "2023-06-09T17:21:15.112Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "states",
+                    "value": "",
+                    "isPath": false
+                },
+                {
+                    "name": "years",
+                    "value": "2005",
+                    "isPath": false
+                },
+                {
+                    "name": "crimes",
+                    "value": "Larceny",
+                    "isPath": false
+                },
+                {
+                    "name": "races",
+                    "value": "white",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "34b74f26-6fd4-45a1-9d8c-9a494f3ff996",
+            "colId": "adf3cbf5-46c9-4de2-949d-0f72086f48ed",
+            "containerId": "",
+            "name": "export xml",
+            "url": "http://localhost:8080/export/xml?states=&years=2005&crimes=Larceny&races=nhwhite_est",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-06-09T14:02:18.072Z",
+            "modified": "2023-06-09T17:22:38.482Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "states",
+                    "value": "",
+                    "isPath": false
+                },
+                {
+                    "name": "years",
+                    "value": "2005",
+                    "isPath": false
+                },
+                {
+                    "name": "crimes",
+                    "value": "Larceny",
+                    "isPath": false
+                },
+                {
+                    "name": "races",
+                    "value": "nhwhite_est",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "9fb0170c-306a-4593-9bdb-86e6f637a82f",
+            "colId": "adf3cbf5-46c9-4de2-949d-0f72086f48ed",
+            "containerId": "",
+            "name": "export yaml",
+            "url": "http://localhost:8080/export/yaml?states=&years=2005&crimes=Larceny&races=nhwhite_est",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2023-06-09T14:18:45.407Z",
+            "modified": "2023-06-09T17:22:49.869Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "states",
+                    "value": "",
+                    "isPath": false
+                },
+                {
+                    "name": "years",
+                    "value": "2005",
+                    "isPath": false
+                },
+                {
+                    "name": "crimes",
+                    "value": "Larceny",
+                    "isPath": false
+                },
+                {
+                    "name": "races",
+                    "value": "nhwhite_est",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "9259905e-0cee-4488-865c-9058982c52b0",
+            "colId": "adf3cbf5-46c9-4de2-949d-0f72086f48ed",
+            "containerId": "",
+            "name": "import",
+            "url": "http://localhost:8080/import",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-06-09T15:02:21.560Z",
+            "modified": "2023-06-10T18:55:53.189Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [],
+                "files": [
+                    {
+                        "name": "file",
+                        "value": "/home/jilquero/Downloads/export.json"
+                    }
+                ]
+            },
+            "tests": []
+        },
+        {
+            "_id": "e7ed2018-96e7-4c22-a175-e0622ff51218",
+            "colId": "adf3cbf5-46c9-4de2-949d-0f72086f48ed",
+            "containerId": "",
+            "name": "https://localhost:8080/ws",
+            "url": "http://localhost:8080/ws",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2023-06-10T14:46:14.073Z",
+            "modified": "2023-06-10T15:29:58.605Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "text/xml"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "xml",
+                "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\n   <soapenv:Header/>\n   <soapenv:Body>\n      <getSummaryRequest xmlns=\"http://test/summary\">\n          <states>Alabama</states>\n         <years></years>\n         <crimes></crimes>\n         <races></races>\n      </getSummaryRequest>\n   </soapenv:Body>\n</soapenv:Envelope>",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}
