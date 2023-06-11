@@ -18,11 +18,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
+@CrossOrigin()
 @RestController
 public class AuthController {
     private final AuthProvider authProvider;
@@ -58,7 +60,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/auth/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest){
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
         String username = registerRequest.getUsername();
         if (!validateUsername(username) || StringUtils.isEmpty(registerRequest.getPassword())) {
             return ResponseEntity.badRequest().build();
@@ -73,8 +75,8 @@ public class AuthController {
             user.setPassword(password);
             securityUserDetailsService.saveUser(user);
             return ResponseEntity.ok("User created");
-        }catch (ApplicationException e){
-            if (e.getErrorCode() == ErrorCodes.USER_ALREADY_EXISTS){
+        } catch (ApplicationException e) {
+            if (e.getErrorCode() == ErrorCodes.USER_ALREADY_EXISTS) {
                 return ResponseEntity.status(409).body("User already exists");
             }
             return ResponseEntity.status(500).body("Internal server error");
