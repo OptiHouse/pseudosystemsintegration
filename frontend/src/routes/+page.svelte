@@ -1,13 +1,20 @@
 <script lang="ts">
 	import axios from 'axios';
 	import RequestButton from '$lib/requestButton.svelte';
+	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 	let dataLoadingResponse = '';
 	let currently_analyzed_data: any = [];
-	let calculating = false;
+	let loading = false;
 	let sorted_by = '?';
+	let picked_year: string = '2013';
+	let picked_crime: string = 'Murder';
+
+	$: if ((picked_crime, picked_year)) {
+		getDataFromDB();
+	}
 
 	function reorder_by_rate() {
-		calculating = true;
+		loading = true;
 		console.log(currently_analyzed_data);
 		if (sorted_by != 'rate_asc') {
 			currently_analyzed_data = currently_analyzed_data.sort((a, b) => {
@@ -24,11 +31,11 @@
 			});
 			sorted_by = 'rate_desc';
 		}
-		calculating = false;
+		loading = false;
 	}
 
 	function reorder_by_state() {
-		calculating = true;
+		loading = true;
 		console.log(currently_analyzed_data);
 		if (sorted_by != 'state_asc') {
 			currently_analyzed_data = currently_analyzed_data.sort((a, b) => {
@@ -41,11 +48,11 @@
 			});
 			sorted_by = 'state_desc';
 		}
-		calculating = false;
+		loading = false;
 	}
 
 	function reorder_by_race(race) {
-		calculating = true;
+		loading = true;
 		console.log(currently_analyzed_data);
 		if (sorted_by != `${race}_asc`) {
 			currently_analyzed_data = currently_analyzed_data.sort((a, b) => {
@@ -66,7 +73,36 @@
 			});
 			sorted_by = `${race}_desc`;
 		}
-		calculating = false;
+		loading = false;
+	}
+
+	async function getDataFromDB() {
+		loading = true;
+		let response = await axios.get(
+			`http://localhost:8080/graphs?years=${picked_year}&crimes=${picked_crime}`,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*'
+				}
+			}
+		);
+		loading = false;
+		console.log(response);
+		for (let i = 0; i < response.data.length; i++) {
+			// console.log(response.data[i]?.statistics[0]);
+			response.data = response.data.filter(
+				(elem) => elem.name != 'United States' && elem.name != 'State'
+			);
+			response.data[i].statistics[0]?.population.sort((a, b) => {
+				if (a.name > b.name) {
+					return 1;
+				} else {
+					return -1;
+				}
+			});
+		}
+		currently_analyzed_data = response.data;
 	}
 </script>
 
@@ -84,31 +120,45 @@
 			});
 		}}
 	/>
-	<RequestButton
+
+	<ListBox on:click={getDataFromDB}>
+		<div style="display: flex; flex-direction: row;">
+			{#each { length: 9 } as _, i}
+				<ListBoxItem bind:group={picked_year} name="medium" value={`${i + 2005}`}
+					>{i + 2005}</ListBoxItem
+				>
+			{/each}
+		</div>
+	</ListBox>
+
+	<ListBox>
+		<div style="display: flex; flex-direction: row;">
+			{#each ['Murder', 'Assault', 'Rape', 'Larceny', 'Burglary', 'Robbery'] as crime}
+				<ListBoxItem bind:group={picked_crime} disabled={loading} name="medium" value={crime}
+					>{crime}</ListBoxItem
+				>
+			{/each}
+		</div>
+	</ListBox>
+
+	<!-- <RequestButton
 		text="get data from DB"
 		bind:responseData={currently_analyzed_data}
-		awaitedFunction={() => {
-			return axios.get('http://localhost:8080/graphs?years=2013&crimes=Murder', {
-				headers: {
-					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*'
-				}
-			});
-		}}
-	/>
+		awaitedFunction={getDataFromDB}
+	/> -->
 
 	{#if currently_analyzed_data.length}
 		<div class="table-container" style="margin-top: 8px;">
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th><button disabled={calculating} on:click={reorder_by_state}>Name</button></th>
-						<th><button disabled={calculating} on:click={reorder_by_rate}>Rate</button></th>
+						<th><button disabled={loading} on:click={reorder_by_state}>Name</button></th>
+						<th><button disabled={loading} on:click={reorder_by_rate}>Rate</button></th>
 						{#if currently_analyzed_data.length > 1}
 							{#each { length: currently_analyzed_data[0]?.statistics[0]?.population?.length } as _, i}
 								<th>
 									<button
-										disabled={calculating}
+										disabled={loading}
 										on:click={() => {
 											console.log(i);
 											reorder_by_race(i);
