@@ -1,13 +1,14 @@
 <script lang="ts">
 	import axios from 'axios';
 	import RequestButton from '$lib/requestButton.svelte';
-	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
+	import { ListBox, ListBoxItem, Tab, TabGroup } from '@skeletonlabs/skeleton';
 	let dataLoadingResponse = '';
 	let currently_analyzed_data: any = [];
 	let loading = false;
 	let sorted_by = '?';
 	let picked_year: string = '2013';
 	let picked_crime: string = 'Murder';
+	let tabSet: number = 0;
 
 	$: if ((picked_crime, picked_year)) {
 		getDataFromDB();
@@ -178,78 +179,99 @@
 		awaitedFunction={getDataFromDB}
 	/> -->
 
-	{#if currently_analyzed_data.length}
-		<div style="background: rgb(31, 35, 48); margin: 12px; padding: 12px; border-radius: 12px;">
-			all columns are sortable
-			<br />
-			rate = crimes of given type per 100000 population
-			<br />
-			races are expressed as % of state's total population
-		</div>
-		<div class="table-container" style="margin-top: 8px;">
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th><button disabled={loading} on:click={reorder_by_state}>state</button></th>
-						<th
-							><button disabled={loading} on:click={reorder_by_rate}
-								><abbr title="per 100000pop per year">rate</abbr></button
-							></th
-						>
-						{#if currently_analyzed_data.length > 1}
-							{#each { length: currently_analyzed_data[0]?.statistics[0]?.population?.length } as _, i}
-								<th>
-									<button
-										disabled={loading}
-										on:click={() => {
-											console.log(i);
-											reorder_by_race(i);
-										}}
-									>
-										{#if currently_analyzed_data[0]?.statistics[0]?.population[i]?.abbr}
-											<abbr title={currently_analyzed_data[0]?.statistics[0]?.population[i]?.abbr}>
-												{currently_analyzed_data[0]?.statistics[0]?.population[i]?.name}
-											</abbr>
-										{:else}
-											{currently_analyzed_data[0]?.statistics[0]?.population[i]?.name}
-										{/if}
-									</button>
-								</th>
-							{/each}
-						{/if}
-					</tr>
-				</thead>
-				<tbody>
-					{#each currently_analyzed_data as row, i}
-						{#if row.name != 'State' && row.name != 'United States'}
-							<tr>
-								<td>{row.name}</td>
-								<td>{row.statistics[0].crimes[0].rate}</td>
-								{#each { length: currently_analyzed_data[0]?.statistics[0]?.population?.length } as _, i}
-									{#if row?.statistics[0]?.population[i]?.name == 'other/mixed'}
-										<td
-											>{Math.round(
-												(100 -
-													row?.statistics[0]?.population[0]?.population -
-													row?.statistics[0]?.population[1]?.population -
-													row?.statistics[0]?.population[2]?.population -
-													row?.statistics[0]?.population[3]?.population -
-													row?.statistics[0]?.population[4]?.population) *
-													100
-											) / 100}</td
-										>
-									{:else}
-										<td>{Math.round(row?.statistics[0]?.population[i]?.population * 100) / 100}</td>
-									{/if}
-								{/each}
-							</tr>
-						{/if}
-					{/each}
-				</tbody>
-			</table>
-		</div>
-	{/if}
+	<div style="margin-top: 12px; width: 800px;">
+		<TabGroup>
+			<Tab bind:group={tabSet} name="tab1" value={0}>table</Tab>
+			<Tab bind:group={tabSet} name="tab2" value={1}>graphs</Tab>
 
+			<!-- Tab Panels --->
+			<svelte:fragment slot="panel">
+				{#if tabSet === 0}
+					{#if currently_analyzed_data.length}
+						<div
+							style="background: rgb(31, 35, 48); margin: 12px 196px; padding: 12px; border-radius: 12px;"
+						>
+							all columns are sortable
+							<br />
+							rate = crimes of given type per 100000 population
+							<br />
+							races are expressed as % of state's total population
+						</div>
+						<div class="table-container" style="margin-top: 8px;">
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th><button disabled={loading} on:click={reorder_by_state}>state</button></th>
+										<th
+											><button disabled={loading} on:click={reorder_by_rate}
+												><abbr title="per 100000pop per year">rate</abbr></button
+											></th
+										>
+										{#if currently_analyzed_data.length > 1}
+											{#each { length: currently_analyzed_data[0]?.statistics[0]?.population?.length } as _, i}
+												<th>
+													<button
+														disabled={loading}
+														on:click={() => {
+															console.log(i);
+															reorder_by_race(i);
+														}}
+													>
+														{#if currently_analyzed_data[0]?.statistics[0]?.population[i]?.abbr}
+															<abbr
+																title={currently_analyzed_data[0]?.statistics[0]?.population[i]
+																	?.abbr}
+															>
+																{currently_analyzed_data[0]?.statistics[0]?.population[i]?.name}
+															</abbr>
+														{:else}
+															{currently_analyzed_data[0]?.statistics[0]?.population[i]?.name}
+														{/if}
+													</button>
+												</th>
+											{/each}
+										{/if}
+									</tr>
+								</thead>
+								<tbody>
+									{#each currently_analyzed_data as row, i}
+										{#if row.name != 'State' && row.name != 'United States'}
+											<tr>
+												<td>{row.name}</td>
+												<td>{row.statistics[0].crimes[0].rate}</td>
+												{#each { length: currently_analyzed_data[0]?.statistics[0]?.population?.length } as _, i}
+													{#if row?.statistics[0]?.population[i]?.name == 'other/mixed'}
+														<td
+															>{Math.round(
+																(100 -
+																	row?.statistics[0]?.population[0]?.population -
+																	row?.statistics[0]?.population[1]?.population -
+																	row?.statistics[0]?.population[2]?.population -
+																	row?.statistics[0]?.population[3]?.population -
+																	row?.statistics[0]?.population[4]?.population) *
+																	100
+															) / 100}</td
+														>
+													{:else}
+														<td
+															>{Math.round(row?.statistics[0]?.population[i]?.population * 100) /
+																100}</td
+														>
+													{/if}
+												{/each}
+											</tr>
+										{/if}
+									{/each}
+								</tbody>
+							</table>
+						</div>
+					{/if}
+				{:else if tabSet === 1}
+					graphs will be here
+				{/if}
+			</svelte:fragment>
+		</TabGroup>
+	</div>
 	<div>
 		{#if dataLoadingResponse}
 			dataLoadingResponse
