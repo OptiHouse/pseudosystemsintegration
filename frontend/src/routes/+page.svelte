@@ -179,6 +179,13 @@
 	/> -->
 
 	{#if currently_analyzed_data.length}
+		<div style="background: rgb(31, 35, 48); margin: 12px; padding: 12px; border-radius: 12px;">
+			all columns are sortable
+			<br />
+			rate = crimes of given type per 100000 population
+			<br />
+			races are expressed as % of state's total population
+		</div>
 		<div class="table-container" style="margin-top: 8px;">
 			<table class="table table-hover">
 				<thead>
