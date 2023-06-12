@@ -1,7 +1,9 @@
 <script lang="ts">
+	import Chart from '../lib/Chart.svelte';
+
 	import axios from 'axios';
 	import RequestButton from '$lib/requestButton.svelte';
-	import { ListBox, ListBoxItem, Tab, TabGroup } from '@skeletonlabs/skeleton';
+	import { ListBox, ListBoxItem, SlideToggle, Tab, TabGroup } from '@skeletonlabs/skeleton';
 	let dataLoadingResponse = '';
 	let currently_analyzed_data: any = [];
 	let loading = false;
@@ -9,6 +11,74 @@
 	let picked_year: string = '2013';
 	let picked_crime: string = 'Murder';
 	let tabSet: number = 0;
+	let stretchGraphs = false;
+
+	let defaultDataPerRace = {
+		asian: {
+			borderColor: 'rgba(255, 255, 0, .2)',
+			backgroundColor: 'rgba(255, 255, 0, .5)',
+			label: 'asian',
+			data: []
+		},
+		black: {
+			borderColor: 'rgba(0, 0, 0, .2)',
+			backgroundColor: 'rgba(0, 0, 0, .5)',
+			label: 'black',
+			data: []
+		},
+		hispanic: {
+			borderColor: 'rgba(100, 100, 200, .2)',
+			backgroundColor: 'rgba(100, 100, 200, .5)',
+			label: 'hispanic',
+			data: []
+		},
+		nhwhite: {
+			borderColor: 'rgba(255, 255, 255, .2)',
+			backgroundColor: 'rgba(255, 255, 255, .5)',
+			label: 'nhwhite',
+			data: []
+		},
+		other: {
+			borderColor: 'rgba(123, 123, 123, .2)',
+			backgroundColor: 'rgba(123, 123, 123, .5)',
+			label: 'other',
+			data: []
+		},
+		nhopi: {
+			borderColor: 'rgba(100, 200, 0, .2)',
+			backgroundColor: 'rgba(100, 200, 0, .5)',
+			label: 'nhopi',
+			data: []
+		}
+	};
+
+	let chartData = {
+		datasets: [
+			{
+				borderColor: 'rgba(99,220,125, .2)',
+				backgroundColor: 'rgba(99,220,125, .5)',
+				label: 'V(node1)',
+				data: [
+					{
+						x: 1,
+						y: -1.711e-2
+					},
+					{
+						x: 631,
+						y: -3.196e1
+					},
+					{
+						x: 794,
+						y: -3.396e1
+					},
+					{
+						x: 1000,
+						y: -3.596e1
+					}
+				]
+			}
+		]
+	};
 
 	$: if ((picked_crime, picked_year)) {
 		getDataFromDB();
@@ -90,6 +160,8 @@
 		);
 		loading = false;
 		console.log(response);
+		chartData.datasets = [];
+		console.log(chartData.datasets);
 		for (let i = 0; i < response.data.length; i++) {
 			// console.log(response.data[i]?.statistics[0]);
 			response.data = response.data.filter(
@@ -133,6 +205,20 @@
 					return -1;
 				}
 			});
+
+			for (let j = 0; j < response.data[i].statistics[0]?.population.length; j++) {
+				if (chartData.datasets.length == j) {
+					chartData.datasets.push(
+						JSON.parse(
+							JSON.stringify(defaultDataPerRace[response.data[i].statistics[0].population[j].name])
+						)
+					);
+				}
+				chartData.datasets[j].data.push({
+					x: response.data[i].statistics[0].population[j].population,
+					y: response.data[i].statistics[0].crimes[0].rate
+				});
+			}
 		}
 		currently_analyzed_data = response.data;
 	}
@@ -183,6 +269,12 @@
 		<TabGroup>
 			<Tab bind:group={tabSet} name="tab1" value={0}>table</Tab>
 			<Tab bind:group={tabSet} name="tab2" value={1}>graphs</Tab>
+			<Tab bind:group={tabSet} name="tab3" value={2}>asian</Tab>
+			<Tab bind:group={tabSet} name="tab4" value={3}>black</Tab>
+			<Tab bind:group={tabSet} name="tab5" value={4}>hispanic</Tab>
+			<Tab bind:group={tabSet} name="tab6" value={5}>nhopi</Tab>
+			<Tab bind:group={tabSet} name="tab7" value={6}>nhwhite</Tab>
+			<Tab bind:group={tabSet} name="tab8" value={7}>other</Tab>
 
 			<!-- Tab Panels --->
 			<svelte:fragment slot="panel">
@@ -267,7 +359,34 @@
 						</div>
 					{/if}
 				{:else if tabSet === 1}
-					graphs will be here
+					<Chart {chartData} {stretchGraphs} />
+					<SlideToggle name="slide" disabled bind:checked={stretchGraphs}
+						>stretch diagrams</SlideToggle
+					>
+				{:else if tabSet === 2}
+					<Chart {stretchGraphs} chartData={{ datasets: [chartData.datasets[0]] }} />
+					<SlideToggle name="slide" bind:checked={stretchGraphs}>stretch diagrams</SlideToggle>
+					<!-- <Chart chartData={{ datasets: [chartData.datasets[0]] }} /> -->
+				{:else if tabSet === 3}
+					<Chart {stretchGraphs} chartData={{ datasets: [chartData.datasets[1]] }} />
+					<SlideToggle name="slide" bind:checked={stretchGraphs}>stretch diagrams</SlideToggle>
+					<!-- <Chart chartData={{ datasets: [chartData.datasets[1]] }} /> -->
+				{:else if tabSet === 4}
+					<Chart {stretchGraphs} chartData={{ datasets: [chartData.datasets[2]] }} />
+					<SlideToggle name="slide" bind:checked={stretchGraphs}>stretch diagrams</SlideToggle>
+					<!-- <Chart chartData={{ datasets: [chartData.datasets[2]] }} /> -->
+				{:else if tabSet === 5}
+					<Chart {stretchGraphs} chartData={{ datasets: [chartData.datasets[3]] }} />
+					<SlideToggle name="slide" bind:checked={stretchGraphs}>stretch diagrams</SlideToggle>
+					<!-- <Chart chartData={{ datasets: [chartData.datasets[3]] }} /> -->
+				{:else if tabSet === 6}
+					<Chart {stretchGraphs} chartData={{ datasets: [chartData.datasets[4]] }} />
+					<SlideToggle name="slide" bind:checked={stretchGraphs}>stretch diagrams</SlideToggle>
+					<!-- <Chart chartData={{ datasets: [chartData.datasets[4]] }} /> -->
+				{:else if tabSet === 7}
+					<Chart {stretchGraphs} chartData={{ datasets: [chartData.datasets[5]] }} />
+					<SlideToggle name="slide" bind:checked={stretchGraphs}>stretch diagrams</SlideToggle>
+					<!-- <Chart chartData={{ datasets: [chartData.datasets[5]] }} /> -->
 				{/if}
 			</svelte:fragment>
 		</TabGroup>
