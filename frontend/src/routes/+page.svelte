@@ -94,6 +94,37 @@
 			response.data = response.data.filter(
 				(elem) => elem.name != 'United States' && elem.name != 'State'
 			);
+			for (let j = 0; j < response.data[i].statistics[0]?.population.length; j++) {
+				let n = response.data[i].statistics[0].population[j].name;
+				let abbr = '';
+				switch (n) {
+					case 'asian_est':
+						n = 'asian';
+						break;
+					case 'black_est':
+						n = 'black';
+						break;
+					case 'hisp_est':
+						n = 'hispanic';
+						break;
+					case 'nhwhite_est':
+						n = 'nhwhite';
+						abbr = 'non-hispanic white';
+						break;
+					case 'other_est':
+						n = 'other';
+						abbr = 'everyone else (eg. other races and mixed people)';
+						break;
+					case 'nhopi_est':
+						n = 'nhopi';
+						abbr = 'Native Hawaiians and other Pacific Islanders';
+						break;
+					default:
+						break;
+				}
+				response.data[i].statistics[0].population[j].name = n;
+				response.data[i].statistics[0].population[j].abbr = abbr;
+			}
 			response.data[i].statistics[0]?.population.sort((a, b) => {
 				if (a.name > b.name) {
 					return 1;
@@ -152,8 +183,12 @@
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th><button disabled={loading} on:click={reorder_by_state}>Name</button></th>
-						<th><button disabled={loading} on:click={reorder_by_rate}>Rate</button></th>
+						<th><button disabled={loading} on:click={reorder_by_state}>state</button></th>
+						<th
+							><button disabled={loading} on:click={reorder_by_rate}
+								><abbr title="per 100000pop per year">rate</abbr></button
+							></th
+						>
 						{#if currently_analyzed_data.length > 1}
 							{#each { length: currently_analyzed_data[0]?.statistics[0]?.population?.length } as _, i}
 								<th>
@@ -162,8 +197,16 @@
 										on:click={() => {
 											console.log(i);
 											reorder_by_race(i);
-										}}>{currently_analyzed_data[0]?.statistics[0]?.population[i]?.name}</button
+										}}
 									>
+										{#if currently_analyzed_data[0]?.statistics[0]?.population[i]?.abbr}
+											<abbr title={currently_analyzed_data[0]?.statistics[0]?.population[i]?.abbr}>
+												{currently_analyzed_data[0]?.statistics[0]?.population[i]?.name}
+											</abbr>
+										{:else}
+											{currently_analyzed_data[0]?.statistics[0]?.population[i]?.name}
+										{/if}
+									</button>
 								</th>
 							{/each}
 						{/if}
@@ -176,7 +219,21 @@
 								<td>{row.name}</td>
 								<td>{row.statistics[0].crimes[0].rate}</td>
 								{#each { length: currently_analyzed_data[0]?.statistics[0]?.population?.length } as _, i}
-									<td>{Math.round(row?.statistics[0]?.population[i]?.population * 100) / 100}</td>
+									{#if row?.statistics[0]?.population[i]?.name == 'other/mixed'}
+										<td
+											>{Math.round(
+												(100 -
+													row?.statistics[0]?.population[0]?.population -
+													row?.statistics[0]?.population[1]?.population -
+													row?.statistics[0]?.population[2]?.population -
+													row?.statistics[0]?.population[3]?.population -
+													row?.statistics[0]?.population[4]?.population) *
+													100
+											) / 100}</td
+										>
+									{:else}
+										<td>{Math.round(row?.statistics[0]?.population[i]?.population * 100) / 100}</td>
+									{/if}
 								{/each}
 							</tr>
 						{/if}
