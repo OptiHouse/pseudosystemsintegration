@@ -28,7 +28,7 @@
 				position: 'bottom',
 				title: {
 					display: true,
-					text: 'race %'
+					text: 'race as % of population'
 				},
 				min: stretchGraphs ? undefined : 0,
 				max: stretchGraphs ? undefined : 100
@@ -38,7 +38,7 @@
 				position: 'left',
 				title: {
 					display: true,
-					text: 'crime rate'
+					text: 'crime rate (occurences per 100000 population)'
 				}
 			}
 		}

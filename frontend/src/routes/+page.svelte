@@ -226,7 +226,7 @@
 
 <div class="container h-full mx-auto flex justify-start items-center flex-col p-16">
 	<RequestButton
-		text="load data to DB"
+		text={`load data to DB`}
 		to_be_sorted={false}
 		bind:responseData={dataLoadingResponse}
 		awaitedFunction={() => {
@@ -239,8 +239,8 @@
 		}}
 	/>
 
-	<ListBox on:click={getDataFromDB}>
-		<div style="display: flex; flex-direction: row;">
+	<ListBox>
+		<div style="display: flex; flex-direction: row; margin-top: 12px;">
 			{#each { length: 9 } as _, i}
 				<ListBoxItem bind:group={picked_year} name="medium" value={`${i + 2005}`}
 					>{i + 2005}</ListBoxItem
@@ -250,7 +250,7 @@
 	</ListBox>
 
 	<ListBox>
-		<div style="display: flex; flex-direction: row;">
+		<div style="display: flex; flex-direction: row; margin-top: 6px;">
 			{#each ['Murder', 'Assault', 'Rape', 'Larceny', 'Burglary', 'Robbery'] as crime}
 				<ListBoxItem bind:group={picked_crime} disabled={loading} name="medium" value={crime}
 					>{crime}</ListBoxItem
@@ -258,6 +258,33 @@
 			{/each}
 		</div>
 	</ListBox>
+
+	<div style="margin: 24px 0 12px; display: flex; flex-direction: row; gap: 12px;">
+		<a
+			class="btn variant-filled"
+			href={`http://localhost:8080/export/json?years=${picked_year}&crimes=${picked_crime}`}
+		>
+			<svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+				><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" /></svg
+			>download json</a
+		>
+		<a
+			class="btn variant-filled"
+			href={`http://localhost:8080/export/yaml?years=${picked_year}&crimes=${picked_crime}`}
+		>
+			<svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+				><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" /></svg
+			>download yaml</a
+		>
+		<a
+			class="btn variant-filled"
+			href={`http://localhost:8080/export/xml?years=${picked_year}&crimes=${picked_crime}`}
+		>
+			<svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+				><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" /></svg
+			>download xml</a
+		>
+	</div>
 
 	<!-- <RequestButton
 		text="get data from DB"
@@ -268,13 +295,19 @@
 	<div style="margin-top: 12px; width: 800px;">
 		<TabGroup>
 			<Tab bind:group={tabSet} name="tab1" value={0}>table</Tab>
-			<Tab bind:group={tabSet} name="tab2" value={1}>graphs</Tab>
+			<Tab bind:group={tabSet} name="tab2" value={1}>races graph</Tab>
 			<Tab bind:group={tabSet} name="tab3" value={2}>asian</Tab>
 			<Tab bind:group={tabSet} name="tab4" value={3}>black</Tab>
 			<Tab bind:group={tabSet} name="tab5" value={4}>hispanic</Tab>
-			<Tab bind:group={tabSet} name="tab6" value={5}>nhopi</Tab>
-			<Tab bind:group={tabSet} name="tab7" value={6}>nhwhite</Tab>
-			<Tab bind:group={tabSet} name="tab8" value={7}>other</Tab>
+			<Tab bind:group={tabSet} name="tab6" value={5}>
+				<abbr title="Native Hawaiians and other Pacific Islanders">nhopi</abbr></Tab
+			>
+			<Tab bind:group={tabSet} name="tab7" value={6}
+				><abbr title="non-hispanic white">nhwhite</abbr></Tab
+			>
+			<Tab bind:group={tabSet} name="tab8" value={7}>
+				<abbr title="everyone else (eg. other races and mixed people)">other</abbr>
+			</Tab>
 
 			<!-- Tab Panels --->
 			<svelte:fragment slot="panel">

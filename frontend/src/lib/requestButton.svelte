@@ -52,10 +52,10 @@
 		on:click={loadData}
 	>
 		{#if !loading}
-			{text}
+			<i style="margin-right: 4px;" class="fa fa-database" /> {text}
 		{:else}
 			<!-- loading... -->
-			Loading <i style="margin-left: 4px;" class="fa fa-spinner fa-spin" />
+			<i style="margin-right: 4px;" class="fa fa-spinner fa-spin" />Loading
 		{/if}
 	</button>
 	<!-- <div style="position: relative; right: 200px;"> -->
