@@ -48,10 +48,12 @@
 	<button
 		class="btn variant-filled"
 		style="width: 200px; margin: 4px;"
-		disabled={loading}
+		disabled={loading || responseData}
 		on:click={loadData}
 	>
-		{#if !loading}
+		{#if responseData}
+			data has been loaded!
+		{:else if !loading}
 			<i style="margin-right: 4px;" class="fa fa-database" /> {text}
 		{:else}
 			<!-- loading... -->

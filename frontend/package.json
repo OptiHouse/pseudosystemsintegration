@@ -18,6 +18,7 @@
 		"@playwright/test": "^1.28.1",
 		"@skeletonlabs/skeleton": "^1.7.1",
 		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/adapter-node": "^1.2.4",
 		"@sveltejs/kit": "^1.5.0",
 		"@tailwindcss/forms": "^0.5.3",
 		"@tailwindcss/typography": "^0.5.9",
@@ -43,6 +44,7 @@
 	"dependencies": {
 		"axios": "^1.4.0",
 		"chart.js": "^4.3.0",
+		"dotenv": "^16.1.4",
 		"svelte-chartjs": "^3.1.2"
 	}
 }

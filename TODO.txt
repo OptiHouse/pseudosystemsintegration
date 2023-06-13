@@ -1,0 +1,18 @@
+logowanie
+rejestracja
+ściąganie podsumowania przez XML przez SOAP
+import
+dockeryzacja
+
+
+dockeryzacja sveltekit:
+
+npm run build
+
+docker build -t sveltekit-integracje .
+
+docker run -d -p 3000:3000 \
+    --rm --name sveltekit-integracje \
+    sveltekit-integracje
+
+docker logs sveltekit-integracje --follow
