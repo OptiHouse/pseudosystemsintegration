@@ -16,7 +16,7 @@ import java.util.*;
 public class SummaryEndpoint {
     private final StateService stateService;
 
-    @Transactional
+    @Transactional(readOnly = true)
     @PayloadRoot(namespace = "http://test/summary", localPart = "getSummaryRequest")
     @ResponsePayload
     public GetSummaryResponse getSummary(@RequestPayload GetSummaryRequest request) {
