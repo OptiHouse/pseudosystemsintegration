@@ -19,9 +19,9 @@
 	let selectedFile;
 	let uploadButtonText = 'Upload';
 
-	// if (browser && !localStorage.getItem('token')) {
-	// 	goto('/login');
-	// }
+	if (browser && !localStorage.getItem('token')) {
+		goto('/login');
+	}
 
 	let defaultDataPerRace = {
 		asian: {
@@ -258,34 +258,35 @@
 	};
 
 	const getSummary = async (state, year) => {
-		let xmlData = `
-			<soapenv:Body>
-				<getSummaryRequest xmlns="http://test/summary">
-					<states>${state}</states>
-					<years>${year}</years>
-					<crimes></crimes>
-					<races></races>
-				</getSummaryRequest>
-			</soapenv:Body>`;
-
-		try {
-			const response = await axios.post('http://localhost:8080/ws', xmlData, {
-				headers: {
-					'Content-Type': '*/*',
-					Authorization: `Bearer ${$data.token}`
-				}
-			});
-
-			console.log(response);
-		} catch (error) {
-			console.error('XML failed!', error);
-		}
+		const response = await fetch(`/soap?states=${state}&years=${year}&token=${$data.token}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'text/xml'
+			}
+		});
+		let new_data = await response.json();
+		var parser = new DOMParser();
+		var xmlDoc = parser.parseFromString(new_data.summary, 'text/xml');
+		let crimesTotal = xmlDoc.getElementsByTagName('ns2:crimes_total')[0];
+		let crimesProperty = xmlDoc.getElementsByTagName('ns2:crimes_total_property')[0];
+		let crimesViolent = xmlDoc.getElementsByTagName('ns2:crimes_total_violent')[0];
+		// console.log(crimesTotal.innerHTML);
+		// console.log(crimesProperty.innerHTML);
+		// console.log(crimesViolent.innerHTML);
+		return {
+			crimesTotal: crimesTotal.innerHTML,
+			crimesProperty: crimesProperty.innerHTML,
+			crimesViolent: crimesViolent.innerHTML
+		};
 	};
-
-	// getSummary('Arizona', 2013);
 </script>
 
 <div class="container h-full mx-auto flex justify-start items-center flex-col p-16">
+	<!-- <button
+		on:click={() => {
+			getSummary('Alabama', picked_year, picked_crime);
+		}}>test</button
+	> -->
 	<RequestButton
 		text={`load data to DB`}
 		to_be_sorted={false}
@@ -465,7 +466,22 @@
 										{#each currently_analyzed_data as row, i}
 											{#if row.name != 'State' && row.name != 'United States'}
 												<tr>
-													<td>{row.name}</td>
+													<td
+														><abbr
+															id={`abbr_${row.name}`}
+															title=""
+															on:mouseenter={async () => {
+																let abbr = document.getElementById(`abbr_${row.name}`);
+																if (abbr && !abbr.title) {
+																	let summary = await getSummary(row.name, picked_year);
+																	abbr.title = `In ${row.name} in ${picked_year} there were:
+-${summary.crimesTotal} crimes in total
+-${summary.crimesProperty} property crimes
+-${summary.crimesViolent} violent crimes`;
+																}
+															}}>{row.name}</abbr
+														></td
+													>
 													<td>{row.statistics[0].crimes[0].rate}</td>
 													{#each { length: currently_analyzed_data[0]?.statistics[0]?.population?.length } as _, i}
 														{#if row?.statistics[0]?.population[i]?.name == 'other/mixed'}
