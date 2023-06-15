@@ -14,7 +14,7 @@
 		setTimeout(() => {
 			justLoaded = false;
 		}, 3000);
-		console.log(response);
+		// console.log(response);
 		if (to_be_sorted) {
 			for (let i = 0; i < response.data.length; i++) {
 				// console.log(response.data[i]?.statistics[0]);

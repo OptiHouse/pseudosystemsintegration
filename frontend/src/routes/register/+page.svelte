@@ -28,14 +28,14 @@
 						}
 					}
 				);
-				console.log(response);
+				// console.log(response);
 				message = 'Registered!';
 				goto('/login');
 			} catch (error) {
 				// @ts-ignore
-				console.log(error);
+				// console.log(error);
 				// @ts-ignore
-				console.log(error.message);
+				// console.log(error.message);
 				// @ts-ignore
 				// if (error.message == 'Request failed with status code 401') {
 				// message = 'Wrong username or password!';

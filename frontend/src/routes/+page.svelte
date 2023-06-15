@@ -96,7 +96,7 @@
 
 	function reorder_by_rate() {
 		loading = true;
-		console.log(currently_analyzed_data);
+		// console.log(currently_analyzed_data);
 		if (sorted_by != 'rate_asc') {
 			currently_analyzed_data = currently_analyzed_data.sort((a, b) => {
 				return a?.statistics[0]?.crimes[0]?.rate - 0 > b?.statistics[0]?.crimes[0]?.rate - 0
@@ -117,7 +117,7 @@
 
 	function reorder_by_state() {
 		loading = true;
-		console.log(currently_analyzed_data);
+		// console.log(currently_analyzed_data);
 		if (sorted_by != 'state_asc') {
 			currently_analyzed_data = currently_analyzed_data.sort((a, b) => {
 				return a?.name > b?.name ? 1 : -1;
@@ -134,7 +134,7 @@
 
 	function reorder_by_race(race) {
 		loading = true;
-		console.log(currently_analyzed_data);
+		// console.log(currently_analyzed_data);
 		if (sorted_by != `${race}_asc`) {
 			currently_analyzed_data = currently_analyzed_data.sort((a, b) => {
 				// currently_analyzed_data[0]?.statistics[0]?.population[i]?.name
@@ -171,7 +171,7 @@
 			}
 		);
 		loading = false;
-		console.log(response);
+		// console.log(response);
 		chartData.datasets = [];
 		// console.log(chartData.datasets);
 		for (let i = 0; i < response.data.length; i++) {
@@ -251,7 +251,7 @@
 
 				uploadButtonText = 'Uploaded!';
 			} catch (error) {
-				console.error('Error uploading file:', error);
+				// console.error('Error uploading file:', error);
 				uploadButtonText = 'Upload failed!';
 			}
 		}
@@ -442,7 +442,7 @@
 														<button
 															disabled={loading}
 															on:click={() => {
-																console.log(i);
+																// console.log(i);
 																reorder_by_race(i);
 															}}
 														>

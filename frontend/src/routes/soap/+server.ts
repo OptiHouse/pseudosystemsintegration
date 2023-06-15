@@ -31,7 +31,7 @@ export const GET: RequestHandler = async ({ url }) => {
 		// 		'Content-Type': '*/*'
 		// 	}
 		// });
-		const response = await fetch('http://localhost:8080/ws', {
+		const response = await fetch('http://backend:8080/ws', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'text/xml',
@@ -46,7 +46,7 @@ export const GET: RequestHandler = async ({ url }) => {
 		// console.log(data);
 		return json({ summary: data });
 	} catch (error) {
-		console.error('XML failed!', error);
+		// console.error('XML failed!', error);
 	}
 
 	return json({ err: 'Soap failed!' });

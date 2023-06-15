@@ -27,15 +27,15 @@
 						}
 					}
 				);
-				console.log(response.data.token);
+				// console.log(response.data.token);
 				$data.token = response.data.token;
 				message = 'Logged in!';
 				goto('/');
 			} catch (error) {
 				// @ts-ignore
-				console.log(error);
+				// console.log(error);
 				// @ts-ignore
-				console.log(error.message);
+				// console.log(error.message);
 				// @ts-ignore
 				if (error.message == 'Request failed with status code 401') {
 					message = 'Wrong username or password!';
