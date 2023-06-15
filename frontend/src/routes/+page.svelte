@@ -246,6 +246,32 @@
 			}
 		}
 	};
+
+	const getSummary = async (state, year) => {
+		let xmlData = `
+			<soapenv:Body>
+				<getSummaryRequest xmlns="http://test/summary">
+					<states>${state}</states>
+					<years>${year}</years>
+					<crimes></crimes>
+					<races></races>
+				</getSummaryRequest>
+			</soapenv:Body>`;
+
+		try {
+			const response = await axios.post('http://localhost:8080/ws', xmlData, {
+				headers: {
+					'Content-Type': '*/*'
+				}
+			});
+
+			console.log(response);
+		} catch (error) {
+			console.error('XML failed!', error);
+		}
+	};
+
+	// getSummary('Arizona', 2013);
 </script>
 
 <div class="container h-full mx-auto flex justify-start items-center flex-col p-16">
