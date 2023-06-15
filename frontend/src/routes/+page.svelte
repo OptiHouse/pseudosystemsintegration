@@ -12,6 +12,7 @@
 	let picked_crime: string = '';
 	let tabSet: number = 0;
 	let stretchGraphs = false;
+	let selectedFile;
 
 	let defaultDataPerRace = {
 		asian: {
@@ -223,6 +224,27 @@
 		}
 		currently_analyzed_data = response.data;
 	}
+
+	const uploadFile = async () => {
+		if (selectedFile) {
+			const formData = new FormData();
+			formData.append('file', selectedFile);
+
+			try {
+				const response = await axios.post('/import', formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				});
+
+				console.log('File uploaded successfully');
+				// Handle the response
+			} catch (error) {
+				console.error('Error uploading file:', error);
+				// Handle the error
+			}
+		}
+	};
 </script>
 
 <div class="container h-full mx-auto flex justify-start items-center flex-col p-16">
@@ -239,6 +261,29 @@
 			});
 		}}
 	/>
+	OR
+	<div>
+		<input type="file" on:change={(event) => (selectedFile = event?.target?.files[0])} />
+		<button on:click={uploadFile} disabled={!selectedFile}>Upload</button>
+	</div>
+
+	<div style="margin: 24px 0 12px; display: flex; flex-direction: row; gap: 12px;">
+		<a class="btn variant-filled" href={`http://localhost:8080/export/json`}>
+			<svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+				><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" /></svg
+			>save DB data to json</a
+		>
+		<a class="btn variant-filled" href={`http://localhost:8080/export/yaml`}>
+			<svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+				><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" /></svg
+			>save DB data to yaml</a
+		>
+		<a class="btn variant-filled" href={`http://localhost:8080/export/xml`}>
+			<svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+				><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" /></svg
+			>save DB data to xml</a
+		>
+	</div>
 
 	<ListBox>
 		<div style="display: flex; flex-direction: row; margin-top: 12px;">
@@ -270,7 +315,7 @@
 					class="fill-current w-4 h-4 mr-2"
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" /></svg
-				>download json</a
+				>save filtered data to json</a
 			>
 			<a
 				class="btn variant-filled"
@@ -280,7 +325,7 @@
 					class="fill-current w-4 h-4 mr-2"
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" /></svg
-				>download yaml</a
+				>save filtered data to yaml</a
 			>
 			<a
 				class="btn variant-filled"
@@ -290,7 +335,7 @@
 					class="fill-current w-4 h-4 mr-2"
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" /></svg
-				>download xml</a
+				>save filtered data to xml</a
 			>
 		</div>
 

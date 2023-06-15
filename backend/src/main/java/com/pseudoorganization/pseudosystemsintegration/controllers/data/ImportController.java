@@ -15,7 +15,7 @@ public class ImportController {
     private final ImportService importService;
 
     @SneakyThrows
-    @GetMapping("")
+    @PostMapping("")
     public String importFiles(@RequestParam("file") MultipartFile file) {
         importService.importFile(file.getInputStream(), file.getOriginalFilename());
         return "imported";
