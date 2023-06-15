@@ -48,7 +48,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(
                                 "/auth/register",
-                                "/auth/login").permitAll()
+                                "/auth/login",
+                                "/export/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .logout(LogoutConfigurer::permitAll);
