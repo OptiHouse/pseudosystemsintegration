@@ -163,7 +163,7 @@
 		loading = false;
 		console.log(response);
 		chartData.datasets = [];
-		console.log(chartData.datasets);
+		// console.log(chartData.datasets);
 		for (let i = 0; i < response.data.length; i++) {
 			// console.log(response.data[i]?.statistics[0]);
 			response.data = response.data.filter(
@@ -231,7 +231,7 @@
 			formData.append('file', selectedFile);
 
 			try {
-				const response = await axios.post('/import', formData, {
+				const response = await axios.post('http://localhost:8080/import', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data'
 					}
