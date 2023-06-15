@@ -13,6 +13,7 @@
 	let tabSet: number = 0;
 	let stretchGraphs = false;
 	let selectedFile;
+	let uploadButtonText = 'Upload';
 
 	let defaultDataPerRace = {
 		asian: {
@@ -229,6 +230,7 @@
 		if (selectedFile) {
 			const formData = new FormData();
 			formData.append('file', selectedFile);
+			uploadButtonText = 'Uploading...';
 
 			try {
 				const response = await axios.post('http://localhost:8080/import', formData, {
@@ -237,11 +239,10 @@
 					}
 				});
 
-				console.log('File uploaded successfully');
-				// Handle the response
+				uploadButtonText = 'Uploaded!';
 			} catch (error) {
 				console.error('Error uploading file:', error);
-				// Handle the error
+				uploadButtonText = 'Upload failed!';
 			}
 		}
 	};
@@ -263,8 +264,15 @@
 	/>
 	OR
 	<div>
-		<input type="file" on:change={(event) => (selectedFile = event?.target?.files[0])} />
-		<button on:click={uploadFile} disabled={!selectedFile}>Upload</button>
+		<input
+			type="file"
+			on:change={(event) => {
+				// @ts-ignore
+				selectedFile = event?.target?.files[0];
+				uploadButtonText = 'Upload';
+			}}
+		/>
+		<button on:click={uploadFile} disabled={!selectedFile}>{uploadButtonText}</button>
 	</div>
 
 	<div style="margin: 24px 0 12px; display: flex; flex-direction: row; gap: 12px;">

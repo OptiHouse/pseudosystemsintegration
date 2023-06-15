@@ -1,4 +1,3 @@
 logowanie
 rejestracja
 ściąganie podsumowania przez XML przez SOAP
-importy yaml/json/xml
