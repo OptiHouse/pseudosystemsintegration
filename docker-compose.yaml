@@ -41,6 +41,7 @@ services:
     networks:
       - internal
       - api
+    cpus: 4
 
   frontend:
     build:
