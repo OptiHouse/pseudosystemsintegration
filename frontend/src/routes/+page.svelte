@@ -472,7 +472,10 @@
 															title=""
 															on:mouseenter={async () => {
 																let abbr = document.getElementById(`abbr_${row.name}`);
-																if (abbr && !abbr.title) {
+																if (
+																	abbr
+																	// && !abbr.title
+																) {
 																	let summary = await getSummary(row.name, picked_year);
 																	abbr.title = `In ${row.name} in ${picked_year} there were:
 -${summary.crimesTotal} crimes in total
