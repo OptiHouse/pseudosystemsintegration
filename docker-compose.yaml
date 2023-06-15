@@ -19,8 +19,8 @@ services:
           "-h",
           "localhost",
         ]
-      timeout: 20s
-      retries: 10
+      timeout: 5s
+      retries: 20
     networks:
       - internal
 

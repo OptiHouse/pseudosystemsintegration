@@ -1,9 +1,13 @@
 <script lang="ts">
 	import Chart from '../lib/Chart.svelte';
 
+	import { data } from '../store';
+	import { goto } from '$app/navigation';
+
 	import axios from 'axios';
 	import RequestButton from '$lib/requestButton.svelte';
 	import { ListBox, ListBoxItem, SlideToggle, Tab, TabGroup } from '@skeletonlabs/skeleton';
+	import { browser } from '$app/environment';
 	let dataLoadingResponse = '';
 	let currently_analyzed_data: any = [];
 	let loading = false;
@@ -14,6 +18,10 @@
 	let stretchGraphs = false;
 	let selectedFile;
 	let uploadButtonText = 'Upload';
+
+	// if (browser && !localStorage.getItem('token')) {
+	// 	goto('/login');
+	// }
 
 	let defaultDataPerRace = {
 		asian: {
@@ -157,7 +165,8 @@
 			{
 				headers: {
 					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*'
+					'Access-Control-Allow-Origin': '*',
+					Authorization: `Bearer ${$data.token}`
 				}
 			}
 		);
@@ -235,7 +244,8 @@
 			try {
 				const response = await axios.post('http://localhost:8080/import', formData, {
 					headers: {
-						'Content-Type': 'multipart/form-data'
+						'Content-Type': 'multipart/form-data',
+						Authorization: `Bearer ${$data.token}`
 					}
 				});
 
@@ -261,7 +271,8 @@
 		try {
 			const response = await axios.post('http://localhost:8080/ws', xmlData, {
 				headers: {
-					'Content-Type': '*/*'
+					'Content-Type': '*/*',
+					Authorization: `Bearer ${$data.token}`
 				}
 			});
 
@@ -280,12 +291,17 @@
 		to_be_sorted={false}
 		bind:responseData={dataLoadingResponse}
 		awaitedFunction={() => {
-			return axios.post(`http://localhost:8080/data/loadData`, {
-				headers: {
-					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*'
+			return axios.post(
+				`http://localhost:8080/data/loadData`,
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${$data.token}`,
+						'Content-Type': 'application/json',
+						'Access-Control-Allow-Origin': '*'
+					}
 				}
-			});
+			);
 		}}
 	/>
 	OR
